@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Scene Card",
+  "type": "object",
+  "required": [
+    "scene_id",
+    "pov",
+    "scene_goal",
+    "conflict",
+    "outcome"
+  ],
+  "properties": {
+    "scene_id": {
+      "type": "string",
+      "pattern": "^scene-[0-9]+$"
+    },
+    "chapter": {
+      "type": "integer"
+    },
+    "sequence": {
+      "type": "integer"
+    },
+    "pov": {
+      "type": "string"
+    },
+    "location": {
+      "type": "string"
+    },
+    "participants": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "scene_goal": {
+      "type": "string"
+    },
+    "conflict": {
+      "type": "string"
+    },
+    "turn": {
+      "type": "string"
+    },
+    "outcome": {
+      "type": "string"
+    },
+    "threads_advanced": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "prohibited_reveals": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "target_words": {
+      "type": "integer"
+    }
+  },
+  "additionalProperties": true
+}

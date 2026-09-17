@@ -1,0 +1,19 @@
+{
+  "name": "ai-author-orchestration",
+  "version": "1.0.0",
+  "description": "Harness-agnostic, repository-driven AI operating system for long-form fiction authoring",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "validate": "tsx scripts/validate.ts",
+    "fold": "tsx scripts/story-state/fold.ts",
+    "fold:check": "tsx scripts/story-state/fold.ts --check",
+    "test": "tsx --test scripts/story-state/fold.test.ts scripts/validate.test.ts"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

@@ -1,0 +1,14 @@
+---
+description: AI Author Orchestration entrypoint
+alwaysApply: true
+---
+
+Read and follow `AGENTS.md` as the root dispatcher.
+
+Load `.ai/` selectively via dispatchers only:
+- `.ai/manifest.json`
+- `.ai/rules/rules.md`
+- `.ai/protocols/protocols.md`
+- `.ai/genres/genres.md`
+
+Do not load the entire `.ai/` directory by default.

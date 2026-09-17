@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Review Result",
+  "type": "object",
+  "required": [
+    "status",
+    "findings",
+    "summary",
+    "recommended_action"
+  ],
+  "properties": {
+    "status": {
+      "enum": [
+        "PASS",
+        "WARN",
+        "FAIL"
+      ]
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "severity",
+          "category",
+          "description"
+        ],
+        "properties": {
+          "severity": {
+            "enum": [
+              "major",
+              "minor",
+              "info"
+            ]
+          },
+          "category": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "recommended_action": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "properties": {
+        "major": {
+          "type": "integer"
+        },
+        "minor": {
+          "type": "integer"
+        }
+      }
+    },
+    "recommended_action": {
+      "enum": [
+        "approve",
+        "revise",
+        "reject"
+      ]
+    }
+  }
+}

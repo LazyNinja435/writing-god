@@ -1,0 +1,9 @@
+status: PASS
+
+findings: []
+
+summary:
+  major: 0
+  minor: 0
+
+recommended_action: approve

@@ -1,0 +1,12 @@
+node_modules/
+.DS_Store
+Thumbs.db
+*.log
+.env
+.env.*
+
+# Derived story state — regenerate with npm run fold
+books/*/state/derived/
+
+# Optional local sandbox
+sandbox/

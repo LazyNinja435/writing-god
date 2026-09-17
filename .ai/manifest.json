@@ -1,0 +1,381 @@
+{
+  "schema_version": "1.0.0",
+  "project": {
+    "name": "ai-author-orchestration",
+    "title": "AI Author Orchestration",
+    "tagline": "Harness-agnostic AI operating system for long-form fiction",
+    "entrypoint": "AGENTS.md",
+    "rule_dispatcher": ".ai/rules/rules.md",
+    "protocol_dispatcher": ".ai/protocols/protocols.md",
+    "genre_dispatcher": ".ai/genres/genres.md"
+  },
+  "directory_map": {
+    "root": ".",
+    "entrypoint": "AGENTS.md",
+    "instructions": ".ai/",
+    "rules_dispatcher": ".ai/rules/rules.md",
+    "protocols_dispatcher": ".ai/protocols/protocols.md",
+    "genre_dispatcher": ".ai/genres/genres.md",
+    "rules": ".ai/rules/",
+    "skills": ".ai/skills/",
+    "agents": ".ai/agents/",
+    "protocols": ".ai/protocols/",
+    "genres": ".ai/genres/",
+    "templates": ".ai/templates/",
+    "schemas": ".ai/schemas/",
+    "memory": ".ai/memory/",
+    "examples": ".ai/examples/",
+    "harnesses": ".ai/harnesses/",
+    "books": "books/",
+    "scripts": "scripts/",
+    "story_state_fold": "scripts/story-state/fold.ts",
+    "validation": "scripts/validate.ts"
+  },
+  "default_workflow": {
+    "description": "Standard fiction authoring agent startup and task flow",
+    "steps": [
+      "1. Read AGENTS.md",
+      "2. Read .ai/manifest.json",
+      "3. Read .ai/rules/rules.md",
+      "4. Load mandatory project and canon rules",
+      "5. Load task-applicable rules only",
+      "6. Read .ai/protocols/protocols.md",
+      "7. Resolve active book",
+      "8. Read books/<book>/book.yaml",
+      "9. Read .ai/genres/genres.md",
+      "10. Load applicable genre packs only",
+      "11. Match skills by When to Use",
+      "12. Load specialist agents only when needed",
+      "13. Load selective book context",
+      "14. Execute protocol",
+      "15. Run reviews",
+      "16. Persist approved artifacts",
+      "17. Emit story-state events",
+      "18. Verify completion"
+    ]
+  },
+  "mandatory_startup_files": [
+    "AGENTS.md",
+    ".ai/manifest.json",
+    ".ai/rules/rules.md",
+    ".ai/rules/project/source-of-truth.md",
+    ".ai/rules/project/project-scope.md",
+    ".ai/rules/project/context-loading.md",
+    ".ai/rules/canon/no-silent-retcon.md",
+    ".ai/rules/canon/canon-authority.md",
+    ".ai/rules/safety/safety-basics.md"
+  ],
+  "rule_categories": {
+    "project": {
+      "path": ".ai/rules/project/",
+      "files": [
+        "project-scope.md",
+        "source-of-truth.md",
+        "active-book-resolution.md",
+        "semantic-agents.md",
+        "context-loading.md"
+      ],
+      "description": "Framework and project-level constraints"
+    },
+    "canon": {
+      "path": ".ai/rules/canon/",
+      "files": [
+        "no-silent-retcon.md",
+        "canon-authority.md",
+        "character-knowledge.md",
+        "timeline-consistency.md",
+        "world-rule-consistency.md",
+        "canon-lifecycle.md"
+      ],
+      "description": "Canonical truth and continuity laws"
+    },
+    "narrative": {
+      "path": ".ai/rules/narrative/",
+      "files": [
+        "pov-discipline.md",
+        "tense-consistency.md",
+        "narrative-voice.md",
+        "dialogue-attribution.md",
+        "exposition-constraints.md",
+        "scene-purpose.md"
+      ],
+      "description": "Narrative craft constraints"
+    },
+    "research": {
+      "path": ".ai/rules/research/",
+      "files": [
+        "factual-research.md",
+        "source-notes.md",
+        "research-vs-canon.md",
+        "uncertainty.md"
+      ],
+      "description": "Research and factual accuracy"
+    },
+    "artifacts": {
+      "path": ".ai/rules/artifacts/",
+      "files": [
+        "artifact-basics.md",
+        "naming-conventions.md",
+        "scene-cards.md",
+        "state-events.md",
+        "reviews.md"
+      ],
+      "description": "Generated artifact standards"
+    },
+    "git": {
+      "path": ".ai/rules/git/",
+      "files": [
+        "git-basics.md",
+        "commits.md",
+        "destructive-actions.md"
+      ],
+      "description": "Version control rules"
+    },
+    "safety": {
+      "path": ".ai/rules/safety/",
+      "files": [
+        "safety-basics.md",
+        "content-boundaries.md"
+      ],
+      "description": "Safety constraints"
+    }
+  },
+  "skill_categories": {
+    "orchestration": {
+      "path": ".ai/skills/orchestration/",
+      "skills": [
+        "initialize-book",
+        "resolve-active-book",
+        "load-book-context",
+        "select-authoring-workflow",
+        "prepare-agent-brief",
+        "synthesize-agent-findings"
+      ]
+    },
+    "story": {
+      "path": ".ai/skills/story/",
+      "skills": [
+        "create-premise",
+        "define-themes",
+        "create-story-bible",
+        "outline-novel",
+        "outline-act",
+        "outline-chapter",
+        "track-setup-payoff",
+        "track-story-threads"
+      ]
+    },
+    "character": {
+      "path": ".ai/skills/character/",
+      "skills": [
+        "create-character",
+        "design-character-arc",
+        "update-relationship-state",
+        "validate-character-behavior"
+      ]
+    },
+    "world": {
+      "path": ".ai/skills/world/",
+      "skills": [
+        "build-world",
+        "create-location",
+        "create-faction",
+        "define-world-rule",
+        "validate-world-consistency"
+      ]
+    },
+    "prose": {
+      "path": ".ai/skills/prose/",
+      "skills": [
+        "plan-scene",
+        "write-scene",
+        "revise-scene",
+        "write-dialogue",
+        "prose-review"
+      ]
+    },
+    "continuity": {
+      "path": ".ai/skills/continuity/",
+      "skills": [
+        "extract-scene-events",
+        "check-continuity",
+        "check-character-knowledge",
+        "check-timeline",
+        "check-thread-consistency",
+        "build-story-state",
+        "propose-canon-change"
+      ]
+    },
+    "editorial": {
+      "path": ".ai/skills/editorial/",
+      "skills": [
+        "developmental-review",
+        "pacing-review",
+        "character-arc-review",
+        "dialogue-review",
+        "style-review",
+        "chapter-review",
+        "manuscript-review"
+      ]
+    },
+    "research": {
+      "path": ".ai/skills/research/",
+      "skills": [
+        "research-topic",
+        "record-research",
+        "validate-factual-claim"
+      ]
+    }
+  },
+  "agent_categories": {
+    "orchestration": {
+      "path": ".ai/agents/orchestration/",
+      "agents": ["orchestrator", "canon-curator"]
+    },
+    "architecture": {
+      "path": ".ai/agents/architecture/",
+      "agents": ["story-architect", "character-architect", "world-architect"]
+    },
+    "writing": {
+      "path": ".ai/agents/writing/",
+      "agents": ["scene-planner", "prose-writer"]
+    },
+    "editorial": {
+      "path": ".ai/agents/editorial/",
+      "agents": ["continuity-editor", "developmental-editor"]
+    }
+  },
+  "protocol_categories": {
+    "orchestration": {
+      "path": ".ai/protocols/orchestration/",
+      "protocols": ["initialize-book"]
+    },
+    "authoring": {
+      "path": ".ai/protocols/authoring/",
+      "protocols": [
+        "concept-to-bible",
+        "bible-to-outline",
+        "outline-to-scene-graph",
+        "write-scene",
+        "write-chapter"
+      ]
+    },
+    "continuity": {
+      "path": ".ai/protocols/continuity/",
+      "protocols": ["canon-update", "continuity-repair"]
+    },
+    "review": {
+      "path": ".ai/protocols/review/",
+      "protocols": [
+        "scene-review",
+        "chapter-review",
+        "act-review",
+        "manuscript-review"
+      ]
+    },
+    "publishing": {
+      "path": ".ai/protocols/publishing/",
+      "protocols": [
+        "developmental-pass",
+        "structural-revision",
+        "line-edit",
+        "copy-edit",
+        "final-manuscript-verification"
+      ]
+    }
+  },
+  "genre_packs": {
+    "fantasy": ".ai/genres/fantasy/",
+    "science-fiction": ".ai/genres/science-fiction/",
+    "mystery": ".ai/genres/mystery/",
+    "thriller": ".ai/genres/thriller/",
+    "romance": ".ai/genres/romance/",
+    "horror": ".ai/genres/horror/",
+    "literary": ".ai/genres/literary/"
+  },
+  "available_templates": [
+    { "file": "book.template.yaml" },
+    { "file": "premise.template.md" },
+    { "file": "character.template.md" },
+    { "file": "character-arc.template.md" },
+    { "file": "location.template.md" },
+    { "file": "faction.template.md" },
+    { "file": "world-rule.template.md" },
+    { "file": "story-architecture.template.md" },
+    { "file": "act-outline.template.md" },
+    { "file": "chapter-outline.template.md" },
+    { "file": "scene-card.template.yaml" },
+    { "file": "story-thread.template.md" },
+    { "file": "setup-payoff.template.md" },
+    { "file": "canon-proposal.template.md" },
+    { "file": "canon-change.template.md" },
+    { "file": "state-event.template.json" },
+    { "file": "review.template.yaml" },
+    { "file": "revision-report.template.md" },
+    { "file": "research-note.template.md" },
+    { "file": "handoff.template.md" },
+    { "file": "agent-delegation.template.md" },
+    { "file": "change-request.template.md" },
+    { "file": "skill.template.md" },
+    { "file": "protocol.template.md" },
+    { "file": "agent.template.md" }
+  ],
+  "available_schemas": [
+    { "file": "book.schema.json", "description": "book.yaml validation" },
+    { "file": "scene-card.schema.json", "description": "Scene card YAML" },
+    { "file": "story-event.schema.json", "description": "Story state events" },
+    { "file": "review-result.schema.json", "description": "Review artifacts" },
+    { "file": "canon-proposal.schema.json", "description": "Canon proposals" },
+    { "file": "story-thread.schema.json", "description": "Plot thread tracking" }
+  ],
+  "story_state_model": {
+    "description": "Event-sourced narrative state: immutable scene events fold into derived views",
+    "events": "books/<book>/state/events/<scene-id>.json",
+    "snapshots": "books/<book>/state/snapshots/",
+    "derived": "books/<book>/state/derived/",
+    "derived_files": [
+      "current-characters.json",
+      "current-knowledge.json",
+      "current-timeline.json",
+      "current-threads.json",
+      "current-world.json",
+      "current-inventory.json"
+    ],
+    "fold_script": {
+      "path": "scripts/story-state/fold.ts",
+      "test": "scripts/story-state/fold.test.ts",
+      "run": "npm run fold -- books/<book>",
+      "check": "npm run fold:check -- books/<book>"
+    },
+    "rules": ".ai/rules/artifacts/state-events.md"
+  },
+  "canon_model": {
+    "description": "Explicit canon lifecycle for established story facts",
+    "statuses": ["PROPOSED", "CANON", "DEPRECATED", "RETCONNED", "UNKNOWN"],
+    "authority": ".ai/rules/canon/canon-authority.md",
+    "lifecycle": ".ai/rules/canon/canon-lifecycle.md",
+    "location": "books/<book>/canon/"
+  },
+  "harness_adapters": {
+    "cursor": ".ai/harnesses/cursor/README.md",
+    "claude_code": ".ai/harnesses/claude-code/README.md",
+    "codex": ".ai/harnesses/codex/README.md",
+    "gemini_cli": ".ai/harnesses/gemini-cli/README.md",
+    "github_copilot": ".ai/harnesses/github-copilot/README.md",
+    "opencode": ".ai/harnesses/opencode/README.md"
+  },
+  "compatibility": {
+    "harness_agnostic": true,
+    "dispatchers_before_details": true,
+    "semantic_agents": true,
+    "tool_specific_config_is_canonical": false,
+    "human_readable": true,
+    "requires": "Any AI agent that can read markdown and JSON from disk",
+    "file_format": "Markdown (.md), YAML (.yaml), JSON (.json)"
+  },
+  "attribution": {
+    "architectural_inspiration": "AstrAI (https://github.com/LazyNinja435/astrai)",
+    "license": "MIT",
+    "note": "Dispatcher architecture, manifest indexing, semantic agents, and event-sourced state concepts adapted from AstrAI"
+  }
+}

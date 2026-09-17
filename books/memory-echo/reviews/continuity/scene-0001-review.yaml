@@ -1,0 +1,15 @@
+status: PASS
+
+findings:
+  - severity: minor
+    category: continuity
+    location: scene-0001
+    description: >
+      Marcus references lawyer—verify ship legal framework exists in later canon if pursued.
+    recommended_action: note for world-architect
+
+summary:
+  major: 0
+  minor: 1
+
+recommended_action: approve

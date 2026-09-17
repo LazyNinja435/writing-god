@@ -1,0 +1,39 @@
+id: book-slug
+title: Untitled
+
+status: planning
+
+genre:
+  primary: literary
+  secondary: []
+
+audience: adult
+target_words: 80000
+
+pov:
+  mode: third-person-limited
+  characters: []
+
+tense: past
+
+tone: []
+prose:
+  description: medium
+  dialogue: medium
+  introspection: medium
+
+content:
+  violence: none
+  romance: none
+
+structure:
+  model: three-act
+
+human_approval:
+  premise: true
+  story_bible: true
+  macro_outline: true
+  act_outline: false
+  chapters: false
+  scenes: false
+  canon_retcon: true

@@ -1,0 +1,53 @@
+scene_id: scene-0001
+chapter: 1
+sequence: 1
+
+pov: sera-voss
+location: medbay
+
+participants:
+  - sera-voss
+  - marcus-hale
+
+story_time:
+  date: voyage-year-14-day-220
+  time: 09:15
+  duration: 45m
+
+scene_goal:
+  Sera wants Marcus to explain why his verbal account of the coolant inspection differs from his certified memory log.
+
+conflict:
+  Marcus insists the log is wrong but refuses to authorize a formal discrepancy flag.
+
+turn:
+  Sera pulls the raw archive hash and shows Marcus a timestamp that should not exist if the log were uncorrupted.
+
+outcome:
+  Marcus admits someone may have edited his memory, but he does not know who; Sera opens a formal investigation.
+
+emotional_start:
+  professional
+
+emotional_end:
+  unsettled
+
+information_revealed:
+  - Marcus's memory log timestamp predates the inspection he describes
+  - Formal investigation opened
+
+information_withheld:
+  - What Marcus saw in the tunnels
+  - Who has Clause 17 access
+
+threads_advanced:
+  - memory-gaps
+
+required_setup:
+  - memory-audit-protocol established
+
+prohibited_reveals:
+  - marcus-tunnel-secret details
+  - identity of antagonist
+
+target_words: 1200

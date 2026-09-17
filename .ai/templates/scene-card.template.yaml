@@ -1,0 +1,33 @@
+scene_id: scene-0001
+chapter: 1
+sequence: 1
+
+pov: character-slug
+location: location-slug
+
+participants: []
+
+story_time:
+  date:
+  time:
+  duration:
+
+scene_goal:
+
+conflict:
+
+turn:
+
+outcome:
+
+emotional_start:
+emotional_end:
+
+information_revealed: []
+information_withheld: []
+
+threads_advanced: []
+required_setup: []
+prohibited_reveals: []
+
+target_words: 1500

@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Story State Event",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "event_id",
+    "scene_id",
+    "status",
+    "changes"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string"
+    },
+    "event_id": {
+      "type": "string"
+    },
+    "scene_id": {
+      "type": "string"
+    },
+    "sequence": {
+      "type": "integer"
+    },
+    "status": {
+      "enum": [
+        "canon",
+        "retconned"
+      ]
+    },
+    "story_time": {
+      "type": "object"
+    },
+    "changes": {
+      "type": "object",
+      "properties": {
+        "characters": {
+          "type": "object"
+        },
+        "threads": {
+          "type": "object"
+        },
+        "knowledge": {
+          "type": "object"
+        },
+        "world": {
+          "type": "object"
+        },
+        "inventory": {
+          "type": "object"
+        },
+        "timeline": {
+          "type": "array"
+        },
+        "canon_facts": {
+          "type": "array"
+        }
+      }
+    }
+  },
+  "additionalProperties": true
+}

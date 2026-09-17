@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0",
+  "event_id": "scene-0001",
+  "scene_id": "scene-0001",
+  "sequence": 1,
+  "status": "canon",
+  "story_time": {},
+  "changes": {
+    "characters": {},
+    "threads": {},
+    "knowledge": {},
+    "world": {},
+    "inventory": {},
+    "timeline": [],
+    "canon_facts": []
+  }
+}

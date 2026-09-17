@@ -1,0 +1,52 @@
+scene_id: scene-0002
+chapter: 1
+sequence: 2
+
+pov: sera-voss
+location: medbay
+
+participants:
+  - sera-voss
+
+story_time:
+  date: voyage-year-14-day-220
+  time: 14:30
+  duration: 30m
+
+scene_goal:
+  Sera reviews audit trails for any Clause 17 invocations tied to Marcus's file.
+
+conflict:
+  The trail entry exists but is redacted at a level her clearance cannot read.
+
+turn:
+  She recognizes the redaction signature format from a training exercise—it's Medical Directorate, not Captain's office.
+
+outcome:
+  Sera suspects internal medical complicity and decides to copy the hash offline against protocol.
+
+emotional_start:
+  focused
+
+emotional_end:
+  paranoid
+
+information_revealed:
+  - Clause 17 was invoked on Marcus's file
+  - Redaction pattern suggests Medical Directorate origin
+
+information_withheld:
+  - Full redacted content
+  - Marcus tunnel secret
+
+threads_advanced:
+  - memory-gaps
+  - marcus-tunnel-secret
+
+required_setup:
+  - scene-0001 investigation opened
+
+prohibited_reveals:
+  - tunnel incident specifics
+
+target_words: 900

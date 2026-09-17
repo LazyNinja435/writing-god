@@ -1,0 +1,46 @@
+id: memory-echo
+title: Memory Echo
+
+status: drafting
+
+genre:
+  primary: science-fiction
+  secondary:
+    - mystery
+
+audience: adult
+target_words: 100000
+
+pov:
+  mode: third-person-limited
+  characters:
+    - sera-voss
+    - marcus-hale
+
+tense: past
+
+tone:
+  - atmospheric
+  - serious
+  - character-driven
+
+prose:
+  description: medium
+  dialogue: high
+  introspection: medium
+
+content:
+  violence: moderate
+  romance: low
+
+structure:
+  model: three-act
+
+human_approval:
+  premise: true
+  story_bible: true
+  macro_outline: true
+  act_outline: false
+  chapters: false
+  scenes: false
+  canon_retcon: true

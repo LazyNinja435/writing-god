@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.0",
+  "event_id": "scene-0001",
+  "scene_id": "scene-0001",
+  "sequence": 1,
+  "status": "canon",
+  "story_time": {
+    "date": "voyage-year-14-day-220",
+    "time": "09:15"
+  },
+  "changes": {
+    "characters": {
+      "sera-voss": {
+        "location": "medbay",
+        "knowledge_added": [
+          "Marcus's memory log timestamp predates his described inspection",
+          "Marcus admits the record may have been edited",
+          "Formal discrepancy investigation opened"
+        ]
+      },
+      "marcus-hale": {
+        "location": "medbay",
+        "knowledge_added": [
+          "Sera has hash evidence of log corruption",
+          "Formal investigation will be filed"
+        ]
+      }
+    },
+    "threads": {
+      "memory-gaps": {
+        "state": "advanced",
+        "note": "Marcus acknowledges possible memory edit; investigation opened"
+      }
+    },
+    "knowledge": {
+      "sera-voss": {
+        "knows_added": [
+          "Marcus recalls coolant inspection on Tuesday with burnt-sugar smell at ladder three",
+          "Marcus's certified log shows impossible timestamp"
+        ],
+        "suspects_added": [
+          "Someone with archive access altered Marcus's memory log"
+        ]
+      },
+      "marcus-hale": {
+        "does_not_know_added": [
+          "Identity of whoever edited the log"
+        ]
+      }
+    },
+    "timeline": [
+      {
+        "event_id": "scene-0001",
+        "scene_id": "scene-0001",
+        "label": "Marcus memory discrepancy interview",
+        "story_time": {
+          "date": "voyage-year-14-day-220",
+          "time": "09:15"
+        }
+      }
+    ],
+    "canon_facts": [
+      {
+        "id": "investigation-opened-001",
+        "fact": "Sera opened formal memory discrepancy investigation regarding Marcus Hale",
+        "status": "CANON"
+      }
+    ]
+  }
+}

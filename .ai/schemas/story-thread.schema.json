@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Story Thread",
+  "type": "object",
+  "required": [
+    "id",
+    "state"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string"
+    },
+    "state": {
+      "enum": [
+        "introduced",
+        "active",
+        "advanced",
+        "dormant",
+        "resolved",
+        "abandoned"
+      ]
+    },
+    "description": {
+      "type": "string"
+    }
+  }
+}

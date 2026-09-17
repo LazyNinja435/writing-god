@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ai-author-orchestration.dev/schemas/book.schema.json",
+  "title": "Book Configuration",
+  "type": "object",
+  "required": [
+    "id",
+    "title",
+    "status",
+    "genre"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$"
+    },
+    "title": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "planning",
+        "outlining",
+        "drafting",
+        "revising",
+        "complete"
+      ]
+    },
+    "genre": {
+      "type": "object",
+      "required": [
+        "primary"
+      ],
+      "properties": {
+        "primary": {
+          "type": "string"
+        },
+        "secondary": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "audience": {
+      "type": "string"
+    },
+    "target_words": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "pov": {
+      "type": "object",
+      "properties": {
+        "mode": {
+          "type": "string"
+        },
+        "characters": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "tense": {
+      "type": "string"
+    },
+    "human_approval": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "boolean"
+      }
+    }
+  },
+  "additionalProperties": true
+}
