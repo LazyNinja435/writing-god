@@ -105,7 +105,7 @@ Approved scenes emit immutable JSON events with independent IDs:
 books/my-book/state/events/evt-000001-scene-0047-approved.json
 ```
 
-Corrections use `event_type: correction` with `supersedes[]` and full replacement deltas. Old event files are never mutated.
+Corrections use `event_type: correction` with `supersedes: [exactly_one_id]` and full replacement deltas. Old event files are never mutated. **Recorded** `sequence` is audit order; fold replays by **effective** historical position (a correction of an early event applies at that event's position, so later history still wins).
 
 ```bash
 npm run fold -- books/my-book
@@ -118,7 +118,7 @@ npm run fold:check -- books/my-book   # read-only
 
 ## Approvals
 
-When `book.yaml` → `human_approval` requires a gate, record a durable approval under `approvals/` bound to `artifact_hash`. If the artifact changes, approval is stale. Nothing canonical persists before a required gate.
+When `book.yaml` → `human_approval` requires a gate, record a durable approval under `approvals/` with `source_artifact` + `artifact_hash` (and optional `promotion_target`). Lifecycle: hash draft → approve → verify source → promote identical bytes → verify target → emit event. If the source changes, approval is stale. Nothing canonical persists before a required gate.
 
 ---
 

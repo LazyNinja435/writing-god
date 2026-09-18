@@ -13,16 +13,17 @@ Derive a story-state event from an **approved** scene (or proposed deltas during
 
 - Scene prose (draft or approved)
 - Scene card
-- Next free `event_id` / `sequence` for the book
+- Next free `event_id` / recorded `sequence` for the book (audit order; unique)
 
 ## Workflow
 
 1. Identify state changes: location, relationships, knowledge, threads, inventory, world
 2. Put knowledge only under `changes.knowledge.<id>.*`
-3. Build event JSON per schema (`event_id` like `evt-000001`, `event_type: scene`, mandatory unique `sequence`)
-4. Do **not** include `canon_facts` — emit separate canon proposals if needed
-5. Validate against schema
-6. Write only after approval gate: `state/events/evt-NNNNNN-scene-NNNN-approved.json`
+3. Build event JSON per schema (`event_id` like `evt-000001`, `event_type: scene`, mandatory unique recorded `sequence`)
+4. For corrections: `supersedes` exactly one prior `event_id`; recorded sequence must exceed the superseded event's sequence; use full replacement deltas
+5. Do **not** include `canon_facts` — emit separate canon proposals if needed
+6. Validate against schema
+7. Write only after approval gate: `state/events/evt-NNNNNN-scene-NNNN-approved.json`
 
 ## Output
 

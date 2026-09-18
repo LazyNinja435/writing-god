@@ -30,7 +30,8 @@
     "books": "books/",
     "scripts": "scripts/",
     "story_state_fold": "scripts/story-state/fold.ts",
-    "validation": "scripts/validate.ts"
+    "validation": "scripts/validate.ts",
+    "schema_validation": "scripts/lib/schema-validation.ts"
   },
   "example_books": [
     ".ai/examples/books/memory-echo"
@@ -347,8 +348,11 @@
     "events": "books/<book>/state/events/evt-NNNNNN-*.json",
     "event_id_pattern": "evt-NNNNNN",
     "event_types": ["scene", "correction", "canon-change", "bootstrap"],
-    "sequence": "mandatory unique positive integer per book",
-    "supersession": "correction.supersedes[] fully inactivates prior events; replacement deltas required",
+    "recorded_sequence": "mandatory unique positive integer per book (audit/append order)",
+    "effective_sequence": "derived story replay position; corrections use chain-root recorded sequence",
+    "supersession": "V1: correction.supersedes exactly one event_id; chains OK; branching rejected; replacement deltas required",
+    "fold_pipeline": "load → schema validate → structural validate → resolveEffectiveHistory → sort by effectiveSequence → fold",
+    "schema_validation": "scripts/lib/schema-validation.ts (shared by fold and validate)",
     "snapshots": "books/<book>/state/snapshots/",
     "derived": "books/<book>/state/derived/",
     "derived_files": [
@@ -359,6 +363,15 @@
       "current-world.json",
       "current-inventory.json",
       "_manifest.json"
+    ],
+    "derived_manifest_fields": [
+      "source_hash",
+      "total_event_count",
+      "active_event_count",
+      "superseded_event_count",
+      "active_event_ids",
+      "superseded_event_ids",
+      "last_event_id"
     ],
     "knowledge_namespace": "changes.knowledge.<id>.* only",
     "fold_script": {
@@ -371,13 +384,15 @@
     "rules": ".ai/rules/artifacts/state-events.md"
   },
   "approval_model": {
-    "description": "Hash-bound human approval records gate canonical persistence",
+    "description": "Hash-bound human approval records gate canonical persistence (source_artifact → optional promotion_target)",
     "path": "books/<book>/approvals/",
     "schema": ".ai/schemas/approval.schema.json",
     "template": ".ai/templates/approval.template.json",
     "rules": ".ai/rules/artifacts/approvals.md",
     "skill": ".ai/skills/orchestration/verify-approval/SKILL.md",
-    "stale_when": "artifact bytes no longer match artifact_hash"
+    "lifecycle": "hash source → approve → verify source → promote → verify target → emit event",
+    "stale_when": "source_artifact bytes no longer match artifact_hash",
+    "promotion_waiting": "promotion_target may be absent until promote; once present must match artifact_hash"
   },
   "canon_model": {
     "description": "Explicit canon lifecycle for established story facts; separate from narrative state events",

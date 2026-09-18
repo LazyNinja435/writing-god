@@ -20,13 +20,29 @@ scripts/       — Deterministic tooling (fold, validate)
 
 Optional bootstrap: `state/initial.json`.
 
+## Event fold pipeline
+
+```text
+load → JSON Schema validate → structural validate
+  → resolve correction chains (EffectiveEvent[])
+  → sort by effective historical position
+  → fold
+```
+
+- **Recorded sequence** = unique audit/append order (`event.sequence`)
+- **Effective sequence** = story replay order (corrections use chain-root sequence)
+- V1: each correction supersedes exactly one event; chains OK; branching rejected
+- Shared schemas: `scripts/lib/schema-validation.ts` (fold + validate)
+
+Derived `_manifest.json` uses `total_event_count` / `active_event_count` / `superseded_event_count` and `source_hash` (no wall-clock timestamps).
+
 ## Approvals
 
-`approvals/` records bind human decisions to artifact content hashes. Required gates block promote/event/fold until a non-stale approval exists.
+`approvals/` records bind human decisions to `source_artifact` content hashes, with optional `promotion_target`. Required gates block promote/event/fold until a non-stale approval exists. Target may be missing while awaiting promotion; once present it must match the approved hash.
 
 ## Immutable History + Deterministic Reconstruction
 
-`initial.json` + active events → fold → `state/derived/`
+`initial.json` + effective active events → fold → `state/derived/`
 
 Corrections supersede prior events; old files remain immutable.
 

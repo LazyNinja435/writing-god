@@ -6,9 +6,9 @@
   "required": [
     "schema_version",
     "approval_id",
-    "artifact",
-    "artifact_hash",
     "artifact_type",
+    "source_artifact",
+    "artifact_hash",
     "decision",
     "approved_at",
     "approved_by"
@@ -20,15 +20,6 @@
     "approval_id": {
       "type": "string",
       "pattern": "^apr-[0-9]{6,}$"
-    },
-    "artifact": {
-      "type": "string",
-      "description": "Book-relative path to approved artifact"
-    },
-    "artifact_hash": {
-      "type": "string",
-      "pattern": "^sha256:[a-f0-9]{64}$",
-      "description": "SHA-256 of artifact bytes at approval time"
     },
     "artifact_type": {
       "enum": [
@@ -42,6 +33,19 @@
         "canon_proposal",
         "other"
       ]
+    },
+    "source_artifact": {
+      "type": "string",
+      "description": "Book-relative path whose bytes were hashed at approval time (usually a draft)"
+    },
+    "promotion_target": {
+      "type": "string",
+      "description": "Optional book-relative path for post-approval promotion; omit or equal source when no promotion"
+    },
+    "artifact_hash": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$",
+      "description": "SHA-256 of source_artifact bytes at approval time"
     },
     "decision": {
       "enum": [

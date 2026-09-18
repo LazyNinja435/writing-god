@@ -167,7 +167,8 @@ The semantic contract (Purpose, Allowed, Not Allowed) remains identical across h
 - Established canon cannot change silently.
 - Writers may **propose** facts; they may not **establish** canon without authorized workflow.
 - On conflict: stop, identify contradiction, propose options, route through `canon-update` protocol.
-- Narrative corrections use immutable **correction** events with `supersedes[]` (never mutate old events).
+- Narrative corrections use immutable **correction** events with `supersedes: [exactly_one_id]` and full replacement deltas (V1: one target per correction; chains OK; branching rejected).
+- Recorded `sequence` is audit order; fold replays by **effective** historical position (corrections occupy the chain-root sequence).
 - Canon file status may use `RETCONNED` only via explicit canon-update with human approval when configured.
 
 Rules: `.ai/rules/canon/no-silent-retcon.md`, `.ai/rules/canon/canon-authority.md`
@@ -199,12 +200,12 @@ Skill: `.ai/skills/orchestration/select-authoring-workflow/SKILL.md`
 Narrative progression is **event-sourced**:
 
 1. Approved scenes produce immutable events in `books/<book>/state/events/` with IDs like `evt-000001` (independent of `scene_id`). Filenames may be descriptive: `evt-000001-scene-0001-approved.json`.
-2. Never edit or delete committed events. Corrections add new `event_type: correction` events with `supersedes[]` and full replacement deltas.
+2. Never edit or delete committed events. Corrections add new `event_type: correction` events with `supersedes: [one_id]` and full replacement deltas. Correction recorded `sequence` must be greater than the superseded event's sequence.
 3. Optional bootstrap: `books/<book>/state/initial.json`.
 4. Regenerate derived state: `npm run fold -- books/<book>`
 5. Read-only check: `npm run fold:check -- books/<book>` (must not write `state/derived/`)
 6. Use derived state for context loading; use events as historical authority.
-7. Invalid events must never fold — validation failures block write.
+7. Invalid events must never fold — validation failures block write (schema + structural + supersession/branch checks).
 
 Do not let multiple agents rewrite shared state JSON files directly.
 
@@ -233,10 +234,10 @@ When approval is required:
 
 1. Stage drafts under `manuscript/drafts/` (and review artifacts)
 2. Present artifacts and wait for explicit human confirmation
-3. Write a durable record under `approvals/` binding `artifact_hash` (sha256)
-4. Only then promote to approved paths, emit state events, and fold
+3. Write a durable record under `approvals/` with `source_artifact` + `artifact_hash` (sha256 of source bytes); set `promotion_target` when promotion applies
+4. Verify source hash → promote identical bytes to `promotion_target` → verify target hash → only then emit state events and fold
 
-If the artifact changes after approval, the approval is **stale** and must be renewed.
+If the source artifact changes after approval, the approval is **stale** and must be renewed. Approved-but-waiting (target not yet created) is valid; once the target exists it must match the approved hash.
 
 Rules: `.ai/rules/artifacts/approvals.md`
 
