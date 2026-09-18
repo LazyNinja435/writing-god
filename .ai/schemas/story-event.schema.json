@@ -1,12 +1,13 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ai-author-orchestration.dev/schemas/story-event.schema.json",
   "title": "Story State Event",
   "type": "object",
   "required": [
     "schema_version",
     "event_id",
-    "scene_id",
-    "status",
+    "event_type",
+    "sequence",
     "changes"
   ],
   "properties": {
@@ -14,19 +15,36 @@
       "type": "string"
     },
     "event_id": {
-      "type": "string"
+      "type": "string",
+      "pattern": "^evt-[0-9]{6,}$",
+      "description": "Independent event identity (not scene_id)"
+    },
+    "event_type": {
+      "enum": [
+        "scene",
+        "correction",
+        "canon-change",
+        "bootstrap"
+      ]
     },
     "scene_id": {
-      "type": "string"
+      "type": "string",
+      "description": "Required for scene events; optional for others"
     },
     "sequence": {
-      "type": "integer"
+      "type": "integer",
+      "minimum": 1,
+      "description": "Mandatory unique per-book ordering key"
     },
-    "status": {
-      "enum": [
-        "canon",
-        "retconned"
-      ]
+    "supersedes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Event IDs fully superseded by this correction"
+    },
+    "reason": {
+      "type": "string"
     },
     "story_time": {
       "type": "object"
@@ -35,28 +53,123 @@
       "type": "object",
       "properties": {
         "characters": {
-          "type": "object"
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "location": { "type": "string" },
+              "condition": { "type": "string" },
+              "status": { "type": "string" },
+              "injuries_added": {
+                "type": "array",
+                "items": { "type": "string" }
+              },
+              "injuries_removed": {
+                "type": "array",
+                "items": { "type": "string" }
+              },
+              "relationships": {
+                "type": "object",
+                "additionalProperties": { "type": "string" }
+              }
+            },
+            "additionalProperties": false
+          }
         },
         "threads": {
           "type": "object"
         },
         "knowledge": {
-          "type": "object"
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "knows_added": {
+                "type": "array",
+                "items": { "type": "string" }
+              },
+              "knows_removed": {
+                "type": "array",
+                "items": { "type": "string" }
+              },
+              "believes_added": {
+                "type": "array",
+                "items": { "type": "string" }
+              },
+              "believes_removed": {
+                "type": "array",
+                "items": { "type": "string" }
+              },
+              "suspects_added": {
+                "type": "array",
+                "items": { "type": "string" }
+              },
+              "suspects_removed": {
+                "type": "array",
+                "items": { "type": "string" }
+              },
+              "does_not_know_added": {
+                "type": "array",
+                "items": { "type": "string" }
+              },
+              "does_not_know_removed": {
+                "type": "array",
+                "items": { "type": "string" }
+              }
+            },
+            "additionalProperties": false
+          }
         },
         "world": {
           "type": "object"
         },
         "inventory": {
-          "type": "object"
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "gained": {
+                "type": "array",
+                "items": { "type": "string" }
+              },
+              "lost": {
+                "type": "array",
+                "items": { "type": "string" }
+              }
+            },
+            "additionalProperties": false
+          }
         },
         "timeline": {
           "type": "array"
-        },
-        "canon_facts": {
-          "type": "array"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "event_type": { "const": "scene" } }
+      },
+      "then": {
+        "required": ["scene_id"]
+      }
+    },
+    {
+      "if": {
+        "properties": { "event_type": { "const": "correction" } }
+      },
+      "then": {
+        "required": ["supersedes", "reason"],
+        "properties": {
+          "supersedes": {
+            "type": "array",
+            "minItems": 1
+          }
         }
       }
     }
-  },
-  "additionalProperties": true
+  ],
+  "additionalProperties": false
 }

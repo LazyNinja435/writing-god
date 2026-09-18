@@ -1,0 +1,12 @@
+{
+  "schema_version": "1.0",
+  "approval_id": "apr-000001",
+  "artifact": "manuscript/scenes/scene-0001.md",
+  "artifact_hash": "sha256:96d510371975c4627bc5ec407f01fab8b544d4efae7a0dc0b978c0bb48843bd9",
+  "artifact_type": "scene",
+  "decision": "approved",
+  "approved_at": "2026-09-17T12:00:00.000Z",
+  "approved_by": "human",
+  "revision": 1,
+  "notes": "Approved after continuity PASS; promoted from manuscript/drafts/scene-0001.md"
+}

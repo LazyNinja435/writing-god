@@ -33,13 +33,18 @@ Review per `review.template.yaml` with continuity category findings
 
 - `.ai/skills/continuity/check-continuity/SKILL.md`
 - `.ai/skills/continuity/check-character-knowledge/SKILL.md`
+- `.ai/skills/continuity/check-timeline/SKILL.md`
+- `.ai/skills/continuity/check-thread-consistency/SKILL.md`
 
 ## Related Protocols
 
 - `.ai/protocols/review/scene-review.md`
+- `.ai/protocols/authoring/write-scene.md`
 - `.ai/protocols/continuity/continuity-repair.md`
 
 ## Related Rules
 
 - `.ai/rules/canon/no-silent-retcon.md`
 - `.ai/rules/canon/character-knowledge.md`
+- `.ai/rules/canon/canon-authority.md`
+- `.ai/rules/artifacts/state-events.md`

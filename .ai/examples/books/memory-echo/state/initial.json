@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.0",
+  "characters": {
+    "sera-voss": {
+      "location": "quarters",
+      "condition": "rested",
+      "relationships": {
+        "marcus-hale": "professional acquaintance"
+      }
+    },
+    "marcus-hale": {
+      "location": "engineering",
+      "condition": "fatigued",
+      "relationships": {
+        "sera-voss": "professional acquaintance"
+      }
+    }
+  },
+  "knowledge": {
+    "sera-voss": {
+      "knows": [
+        "Memory Audit Protocol requires dual certification",
+        "Clause 17 allows emergency memory edits with audit trail"
+      ],
+      "believes": [],
+      "suspects": [],
+      "does_not_know": [
+        "Whether anyone has recently invoked Clause 17 on Marcus"
+      ]
+    },
+    "marcus-hale": {
+      "knows": [
+        "His verbal recollection of the coolant inspection"
+      ],
+      "believes": [],
+      "suspects": [],
+      "does_not_know": [
+        "Identity of whoever may have edited his log"
+      ]
+    }
+  },
+  "threads": {
+    "memory-gaps": {
+      "state": "introduced"
+    },
+    "marcus-tunnel-secret": {
+      "state": "introduced"
+    }
+  },
+  "world": {
+    "ship": {
+      "name": "Mnemosyne",
+      "status": "nominal"
+    }
+  },
+  "inventory": {
+    "sera-voss": []
+  },
+  "timeline": []
+}

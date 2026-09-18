@@ -1,9 +1,9 @@
 {
   "schema_version": "1.0",
-  "event_id": "scene-0001",
+  "event_id": "evt-000001",
+  "event_type": "scene",
   "scene_id": "scene-0001",
   "sequence": 1,
-  "status": "canon",
   "story_time": {},
   "changes": {
     "characters": {},
@@ -11,7 +11,6 @@
     "knowledge": {},
     "world": {},
     "inventory": {},
-    "timeline": [],
-    "canon_facts": []
+    "timeline": []
   }
 }

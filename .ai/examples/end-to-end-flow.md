@@ -5,11 +5,12 @@
 ## Flow
 
 ```text
-user concept
-  → initialize-book protocol
+select protocol: initialize-book  (do NOT resolve existing/example books)
+  → create books/<slug>/
+  → resolve newly created book
   → genre: science-fiction (primary), mystery (secondary)
   → create-premise → premise.md
-  → human approval
+  → human approval + approvals/*.json
   → concept-to-bible protocol
   → characters (Dr. Sera Voss, Marcus Hale)
   → world (Mnemosyne colony ship, memory audit rule)
@@ -17,11 +18,15 @@ user concept
   → bible-to-outline → architecture, threads
   → outline-to-scene-graph → scene cards
   → write-scene protocol (scene-0001)
-  → continuity + developmental review
-  → approved manuscript scene
-  → extract-scene-events → immutable event
-  → fold → derived state
+      draft → manuscript/drafts/
+      proposed state deltas
+      continuity + developmental review
+      human approval (if configured) → approvals/
+      promote → manuscript/scenes/
+      event evt-000001 → state/events/
+      optional canon proposal → canon/proposals/
+      fold → state/derived/
   → next scene
 ```
 
-See `books/memory-echo/` for a minimal worked example with artifacts.
+See `.ai/examples/books/memory-echo/` for a minimal worked example (example-only; not an active book).

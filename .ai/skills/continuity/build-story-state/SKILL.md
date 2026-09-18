@@ -2,32 +2,35 @@
 
 ## Purpose
 
-Regenerate derived state from events.
+Regenerate derived state from initial state + immutable events.
 
 ## When to Use
 
 - After new event committed
-- Before context load
+- Before context load when derived may be stale
 
 ## Required Inputs
 
-- Event files in order
+- Optional `state/initial.json`
+- Event files in `state/events/`
 
 ## Workflow
 
-1. Run scripts/story-state/fold.ts
-2. Verify derived JSON
-3. Use --check in CI
+1. Run `npm run fold -- <book-path>` to write derived state
+2. Use `npm run fold:check -- <book-path>` in CI / verification (read-only; must not write)
+3. Verify derived JSON and `_manifest.json` `source_hash`
 
 ## Output
 
-state/derived/*.json
+`state/derived/*.json` (write mode only)
 
 ## Forbidden
 
 - Hand-editing derived state
-- Reordering events
+- Mutating event files
+- Running fold:check as a write path
 
 ## Related
 
-- Scripts: scripts/story-state/fold.ts
+- Scripts: `scripts/story-state/fold.ts`
+- Rules: `.ai/rules/artifacts/state-events.md`

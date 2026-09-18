@@ -42,5 +42,7 @@ human_approval:
   macro_outline: true
   act_outline: false
   chapters: false
-  scenes: false
+  scenes: true
   canon_retcon: true
+  # Unknown keys are preserved and must not be treated as false by harnesses.
+  # example_custom_gate: true

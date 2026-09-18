@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ai-author-orchestration.dev/schemas/initial-state.schema.json",
+  "title": "Initial Story State",
+  "type": "object",
+  "required": [
+    "schema_version"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string"
+    },
+    "characters": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "location": { "type": "string" },
+          "condition": { "type": "string" },
+          "status": { "type": "string" },
+          "injuries": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "relationships": {
+            "type": "object",
+            "additionalProperties": { "type": "string" }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "knowledge": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "knows": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "believes": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "suspects": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "does_not_know": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "threads": {
+      "type": "object"
+    },
+    "world": {
+      "type": "object"
+    },
+    "inventory": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": { "type": "string" }
+      }
+    },
+    "timeline": {
+      "type": "array"
+    }
+  },
+  "additionalProperties": false
+}

@@ -11,7 +11,9 @@
     "test": "tsx --test scripts/story-state/fold.test.ts scripts/validate.test.ts"
   },
   "devDependencies": {
-    "tsx": "^4.19.0"
+    "ajv": "^8.20.0",
+    "tsx": "^4.19.0",
+    "yaml": "^2.9.1"
   },
   "engines": {
     "node": ">=18"

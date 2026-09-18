@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ai-author-orchestration.dev/schemas/approval.schema.json",
+  "title": "Human Approval Record",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "approval_id",
+    "artifact",
+    "artifact_hash",
+    "artifact_type",
+    "decision",
+    "approved_at",
+    "approved_by"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string"
+    },
+    "approval_id": {
+      "type": "string",
+      "pattern": "^apr-[0-9]{6,}$"
+    },
+    "artifact": {
+      "type": "string",
+      "description": "Book-relative path to approved artifact"
+    },
+    "artifact_hash": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$",
+      "description": "SHA-256 of artifact bytes at approval time"
+    },
+    "artifact_type": {
+      "enum": [
+        "premise",
+        "story_bible",
+        "macro_outline",
+        "act_outline",
+        "chapter",
+        "scene",
+        "canon_retcon",
+        "canon_proposal",
+        "other"
+      ]
+    },
+    "decision": {
+      "enum": [
+        "approved",
+        "rejected"
+      ]
+    },
+    "approved_at": {
+      "type": "string"
+    },
+    "approved_by": {
+      "const": "human"
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

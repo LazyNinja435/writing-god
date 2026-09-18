@@ -30,7 +30,7 @@ Write manuscript prose from approved scene cards and loaded context.
 
 ## Output Format
 
-`manuscript/scenes/<scene-id>.md`
+`manuscript/drafts/<scene-id>.md` (promote to `manuscript/scenes/` only after approval)
 
 ## Related Skills
 
@@ -44,4 +44,6 @@ Write manuscript prose from approved scene cards and loaded context.
 ## Related Rules
 
 - `.ai/rules/canon/character-knowledge.md`
+- `.ai/rules/canon/canon-authority.md`
 - `.ai/rules/narrative/pov-discipline.md`
+- `.ai/rules/artifacts/approvals.md`

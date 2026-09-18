@@ -21,6 +21,13 @@
     },
     "justification": {
       "type": "string"
+    },
+    "source_scene": {
+      "type": "string"
+    },
+    "source_event": {
+      "type": "string"
     }
-  }
+  },
+  "additionalProperties": true
 }

@@ -1,0 +1,83 @@
+{
+  "schema_version": "1.0",
+  "event_id": "evt-000002",
+  "event_type": "correction",
+  "scene_id": "scene-0001",
+  "sequence": 2,
+  "supersedes": ["evt-000001"],
+  "reason": "Illustrative correction: inventory item renamed; knowledge/thread outcomes restated as full replacement deltas after superseding evt-000001.",
+  "story_time": {
+    "date": "voyage-year-14-day-220",
+    "time": "09:15"
+  },
+  "changes": {
+    "characters": {
+      "sera-voss": {
+        "location": "medbay",
+        "relationships": {
+          "marcus-hale": "growing suspicion"
+        }
+      },
+      "marcus-hale": {
+        "location": "medbay",
+        "relationships": {
+          "sera-voss": "reluctant cooperation"
+        }
+      }
+    },
+    "threads": {
+      "memory-gaps": {
+        "state": "advanced",
+        "note": "Marcus acknowledges possible memory edit; investigation opened"
+      }
+    },
+    "knowledge": {
+      "sera-voss": {
+        "knows_added": [
+          "Marcus recalls coolant inspection on Tuesday with burnt-sugar smell at ladder three",
+          "Marcus's certified log shows impossible timestamp",
+          "Marcus admits the record may have been edited",
+          "Formal discrepancy investigation opened"
+        ],
+        "suspects_added": [
+          "Someone with archive access altered Marcus's memory log"
+        ],
+        "does_not_know_removed": [
+          "Whether anyone has recently invoked Clause 17 on Marcus"
+        ]
+      },
+      "marcus-hale": {
+        "knows_added": [
+          "Sera has hash evidence of log corruption",
+          "Formal investigation will be filed"
+        ],
+        "does_not_know_added": [
+          "Identity of whoever edited the log"
+        ]
+      }
+    },
+    "world": {
+      "investigations": {
+        "marcus-hale-memory-discrepancy": "open"
+      }
+    },
+    "inventory": {
+      "sera-voss": {
+        "gained": [
+          "private-hash-comparison-note"
+        ]
+      }
+    },
+    "timeline": [
+      {
+        "event_id": "evt-000002",
+        "scene_id": "scene-0001",
+        "label": "Marcus memory discrepancy interview (corrected inventory label)",
+        "story_time": {
+          "date": "voyage-year-14-day-220",
+          "time": "09:15"
+        }
+      }
+    ]
+  }
+}

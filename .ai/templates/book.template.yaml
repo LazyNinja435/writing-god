@@ -37,3 +37,4 @@ human_approval:
   chapters: false
   scenes: false
   canon_retcon: true
+  # Preserve unknown keys; do not treat unrecognized gates as false.

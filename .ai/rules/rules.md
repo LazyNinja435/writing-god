@@ -65,6 +65,8 @@
 | `artifacts/naming-conventions.md` | New files |
 | `artifacts/scene-cards.md` | Scene cards |
 | `artifacts/state-events.md` | Story-state events |
+| `artifacts/approvals.md` | Human approval records |
+| `artifacts/human-approval-config.md` | book.yaml human_approval keys |
 | `artifacts/reviews.md` | Review reports |
 
 ## Git Rules (`.ai/rules/git/`)

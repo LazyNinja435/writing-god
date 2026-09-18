@@ -1,0 +1,12 @@
+{
+  "schema_version": "1.0",
+  "approval_id": "apr-000001",
+  "artifact": "manuscript/scenes/scene-0001.md",
+  "artifact_hash": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+  "artifact_type": "scene",
+  "decision": "approved",
+  "approved_at": "2026-01-01T00:00:00.000Z",
+  "approved_by": "human",
+  "revision": 1,
+  "notes": ""
+}

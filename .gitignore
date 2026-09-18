@@ -7,6 +7,7 @@ Thumbs.db
 
 # Derived story state — regenerate with npm run fold
 books/*/state/derived/
+.ai/examples/books/*/state/derived/
 
 # Optional local sandbox
 sandbox/

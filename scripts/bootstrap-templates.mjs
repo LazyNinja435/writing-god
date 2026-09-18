@@ -674,7 +674,7 @@ user concept
   → next scene
 \`\`\`
 
-See \`books/memory-echo/\` for a minimal worked example with artifacts.
+See \`.ai/examples/books/memory-echo/\` for a minimal worked example with artifacts.
 `);
 
 w("docs/architecture.md", `# Architecture Overview

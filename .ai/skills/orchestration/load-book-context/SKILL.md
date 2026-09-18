@@ -36,5 +36,6 @@ Focused context bundle: paths and summaries of loaded artifacts
 
 ## Related
 
-- Rules: project/context-loading.md
-- Protocols: authoring/write-scene.md
+- Rules: `.ai/rules/project/context-loading.md`
+- Protocols: `.ai/protocols/authoring/write-scene.md`
+- Rules: `.ai/rules/artifacts/state-events.md`

@@ -331,7 +331,7 @@ Use templates from \`.ai/templates/\`. Validate against schemas when available. 
 Scene cards live in \`planning/scenes/\`. Required before prose writing in write-scene protocol. Outcomes are binding unless CHANGE_REQUEST approved.`,
     "state-events.md": `# State Events
 
-One immutable JSON event per approved scene in \`state/events/\`. Never edit committed events. Retcons add explicit superseding events.`,
+Immutable events in \`state/events/\` use \`evt-*\` IDs. Never edit committed events. Corrections supersede via \`supersedes[]\`.`,
     "reviews.md": `# Reviews
 
 Reviews use \`review.template.yaml\`. Default role is diagnose, not rewrite. Revision is a separate step.`,
