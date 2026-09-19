@@ -31,14 +31,15 @@ load → JSON Schema validate → structural validate
 
 - **Recorded sequence** = unique audit/append order (`event.sequence`)
 - **Effective sequence** = story replay order (corrections use chain-root sequence)
-- V1: each correction supersedes exactly one event; chains OK; branching rejected
+- V1: only `correction` may have `supersedes`; exactly one target; chains OK; branching rejected
 - Shared schemas: `scripts/lib/schema-validation.ts` (fold + validate)
+- Scene events carry manuscript `provenance`; validate cross-checks hashes and approvals (`scripts/lib/provenance-validation.ts`)
 
-Derived `_manifest.json` uses `total_event_count` / `active_event_count` / `superseded_event_count` and `source_hash` (no wall-clock timestamps).
+Derived `_manifest.json` uses `total_event_count` / `active_event_count` / `superseded_event_count`, `source_hash`, `active_event_ids` (effective replay order), `latest_recorded_event_id` / `latest_recorded_sequence`, and `last_effective_event_id` (no wall-clock timestamps).
 
 ## Approvals
 
-`approvals/` records bind human decisions to `source_artifact` content hashes, with optional `promotion_target`. Required gates block promote/event/fold until a non-stale approval exists. Target may be missing while awaiting promotion; once present it must match the approved hash.
+`approvals/` records bind human decisions to `source_artifact` content hashes, with optional `promotion_target`. Required gates block promote/event/fold until a non-stale approval exists. Target may be missing while awaiting promotion; once present it must match the approved hash. Scene events with `human_approval.scenes: true` must cite a matching `approval_id` in provenance.
 
 ## Immutable History + Deterministic Reconstruction
 

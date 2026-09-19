@@ -5,10 +5,16 @@
   "scene_id": "scene-0001",
   "sequence": 2,
   "supersedes": ["evt-000001"],
-  "reason": "Illustrative correction: inventory item renamed; knowledge/thread outcomes restated as full replacement deltas after superseding evt-000001.",
+  "reason": "Extraction correction (Case A): inventory item label restated as full replacement deltas after superseding evt-000001. Reuses the same approved manuscript, manuscript_hash, and approval_id — prose bytes were unchanged; only the extracted state deltas were wrong.",
   "story_time": {
     "date": "voyage-year-14-day-220",
     "time": "09:15"
+  },
+  "provenance": {
+    "manuscript": "manuscript/scenes/scene-0001.md",
+    "manuscript_hash": "sha256:96d510371975c4627bc5ec407f01fab8b544d4efae7a0dc0b978c0bb48843bd9",
+    "approval_id": "apr-000001",
+    "scene_card": "planning/scenes/scene-0001.yaml"
   },
   "changes": {
     "characters": {

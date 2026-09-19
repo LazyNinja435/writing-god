@@ -350,7 +350,7 @@
     "event_types": ["scene", "correction", "canon-change", "bootstrap"],
     "recorded_sequence": "mandatory unique positive integer per book (audit/append order)",
     "effective_sequence": "derived story replay position; corrections use chain-root recorded sequence",
-    "supersession": "V1: correction.supersedes exactly one event_id; chains OK; branching rejected; replacement deltas required",
+    "supersession": "V1: only event_type correction may have supersedes; exactly one event_id; chains OK; branching rejected; replacement deltas required",
     "fold_pipeline": "load → schema validate → structural validate → resolveEffectiveHistory → sort by effectiveSequence → fold",
     "schema_validation": "scripts/lib/schema-validation.ts (shared by fold and validate)",
     "snapshots": "books/<book>/state/snapshots/",
@@ -371,8 +371,18 @@
       "superseded_event_count",
       "active_event_ids",
       "superseded_event_ids",
-      "last_event_id"
+      "latest_recorded_event_id",
+      "latest_recorded_sequence",
+      "last_effective_event_id"
     ],
+    "active_event_ids_definition": "IDs of non-superseded events in effective replay order (effectiveSequence ascending)",
+    "manuscript_provenance": {
+      "required_on": ["scene", "correction_of_scene_root"],
+      "fields": ["manuscript", "manuscript_hash", "scene_card", "approval_id?"],
+      "approval_id_required_when": "book.yaml human_approval.scenes === true",
+      "cross_checks": "scripts/lib/provenance-validation.ts",
+      "safe_paths": "scripts/lib/book-paths.ts"
+    },
     "knowledge_namespace": "changes.knowledge.<id>.* only",
     "fold_script": {
       "path": "scripts/story-state/fold.ts",

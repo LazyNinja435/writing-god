@@ -10,6 +10,41 @@
     "sequence",
     "changes"
   ],
+  "$defs": {
+    "sha256_hash": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$",
+      "description": "SHA-256 of file bytes as sha256:<64 lowercase hex>"
+    },
+    "approval_id": {
+      "type": "string",
+      "pattern": "^apr-[0-9]{6,}$"
+    },
+    "manuscript_provenance": {
+      "type": "object",
+      "required": ["manuscript", "manuscript_hash", "scene_card"],
+      "properties": {
+        "manuscript": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Book-relative path to approved manuscript (e.g. manuscript/scenes/scene-0001.md)"
+        },
+        "manuscript_hash": {
+          "$ref": "#/$defs/sha256_hash"
+        },
+        "approval_id": {
+          "$ref": "#/$defs/approval_id",
+          "description": "Required when book human_approval.scenes is true (enforced in TS)"
+        },
+        "scene_card": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Book-relative path to scene card YAML"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
   "properties": {
     "schema_version": {
       "type": "string"
@@ -45,13 +80,17 @@
       "minItems": 1,
       "maxItems": 1,
       "uniqueItems": true,
-      "description": "V1: exactly one event ID fully superseded; chains (A←B←C) via successive corrections"
+      "description": "Only allowed on event_type correction. V1: exactly one event ID fully superseded"
     },
     "reason": {
       "type": "string"
     },
     "story_time": {
       "type": "object"
+    },
+    "provenance": {
+      "$ref": "#/$defs/manuscript_provenance",
+      "description": "Manuscript provenance; required for scene events and scene-root corrections"
     },
     "changes": {
       "type": "object",
@@ -162,15 +201,17 @@
   "allOf": [
     {
       "if": {
-        "properties": { "event_type": { "const": "scene" } }
+        "properties": { "event_type": { "const": "scene" } },
+        "required": ["event_type"]
       },
       "then": {
-        "required": ["scene_id"]
+        "required": ["scene_id", "provenance"]
       }
     },
     {
       "if": {
-        "properties": { "event_type": { "const": "correction" } }
+        "properties": { "event_type": { "const": "correction" } },
+        "required": ["event_type"]
       },
       "then": {
         "required": ["supersedes", "reason"],
@@ -181,6 +222,11 @@
             "maxItems": 1,
             "uniqueItems": true
           }
+        }
+      },
+      "else": {
+        "not": {
+          "required": ["supersedes"]
         }
       }
     }

@@ -161,6 +161,9 @@ describe("example book fold + approval hashes", () => {
     assert.equal(first.derived!.total_event_count, 2);
     assert.equal(first.derived!.active_event_count, 1);
     assert.equal(first.derived!.superseded_event_count, 1);
+    assert.equal(first.derived!.latest_recorded_event_id, "evt-000002");
+    assert.equal(first.derived!.latest_recorded_sequence, 2);
+    assert.equal(first.derived!.last_effective_event_id, "evt-000002");
   });
 
   it("draft hash == approval hash == approved scene hash", () => {

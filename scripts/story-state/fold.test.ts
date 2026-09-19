@@ -26,12 +26,20 @@ import {
 const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const registry = defaultSchemaRegistry(REPO_ROOT);
 
+const baseProvenance = {
+  manuscript: "manuscript/scenes/scene-0001.md",
+  manuscript_hash: "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  approval_id: "apr-000001",
+  scene_card: "planning/scenes/scene-0001.yaml",
+};
+
 const baseEvent = (overrides: Partial<StoryEvent> = {}): StoryEvent => ({
   schema_version: "1.0",
   event_id: "evt-000001",
   event_type: "scene",
   scene_id: "scene-0001",
   sequence: 1,
+  provenance: { ...baseProvenance },
   changes: {},
   ...overrides,
 });
@@ -84,11 +92,35 @@ describe("validateEvent", () => {
         event_id: "evt-000002",
         event_type: "correction",
         sequence: 2,
+        provenance: undefined,
       }),
       errors,
     );
     assert.ok(errors.some((e) => e.includes("supersedes")));
     assert.ok(errors.some((e) => e.includes("reason")));
+  });
+
+  it("rejects supersedes on non-correction events", () => {
+    const errors: string[] = [];
+    validateEvent(
+      baseEvent({
+        event_type: "scene",
+        supersedes: ["evt-000000"],
+      }),
+      errors,
+    );
+    assert.ok(errors.some((e) => e.includes("only correction events may have supersedes")));
+  });
+
+  it("requires provenance on scene events", () => {
+    const errors: string[] = [];
+    validateEvent(
+      baseEvent({
+        provenance: undefined,
+      }),
+      errors,
+    );
+    assert.ok(errors.some((e) => e.includes("provenance")));
   });
 
   it("rejects multi-target supersedes on correction", () => {
@@ -370,11 +402,16 @@ describe("historical correction ordering", () => {
       sourceHash: "x",
       totalEventCount: 3,
       supersededEventIds: [...resolution.supersededIds],
+      allEvents: events,
     });
     assert.equal(state.characters.sera.location, "B");
     assert.equal(state.total_event_count, 3);
     assert.equal(state.active_event_count, 2);
     assert.equal(state.superseded_event_count, 1);
+    assert.equal(state.latest_recorded_event_id, "evt-000003");
+    assert.equal(state.latest_recorded_sequence, 3);
+    assert.equal(state.last_effective_event_id, "evt-000002");
+    assert.deepEqual(state.active_event_ids, ["evt-000003", "evt-000002"]);
   });
 
   it("chain: A←C←D at pos1, B at pos2 → final B", () => {
@@ -749,6 +786,23 @@ describe("loadEvents schema validation", () => {
           sequence: 3,
           supersedes: ["evt-000001", "evt-000002"],
           reason: "multi",
+        }),
+      ),
+      "utf8",
+    );
+    const result = loadEvents(dir, registry);
+    assert.equal(result.validEvents.length, 0);
+    assert.ok(result.errors.some((e) => e.includes("Schema validation failed")));
+    fs.rmSync(dir, { recursive: true, force: true });
+  });
+
+  it("rejects supersedes on scene via schema", () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), "fold-scene-sup-"));
+    fs.writeFileSync(
+      path.join(dir, "evt-000001.json"),
+      JSON.stringify(
+        baseEvent({
+          supersedes: ["evt-000000"],
         }),
       ),
       "utf8",

@@ -48,3 +48,5 @@ For non-promoted artifacts: omit `promotion_target`, or set it equal to `source_
 ## Verification
 
 Skill: `.ai/skills/orchestration/verify-approval/SKILL.md`
+
+Book-relative paths in approvals must stay inside the book workspace (`scripts/lib/book-paths.ts`). Scene event provenance cross-checks approvals when `human_approval.scenes` is true (`scripts/lib/provenance-validation.ts`).

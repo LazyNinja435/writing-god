@@ -15,12 +15,15 @@ import {
   schemasDirFromRoot,
   type SchemaRegistry,
 } from "./lib/schema-validation.ts";
+import { resolveBookRelativePath, BookPathError } from "./lib/book-paths.ts";
+import { validateBookEventProvenance } from "./lib/provenance-validation.ts";
 import {
   loadEvents,
   loadInitialState,
   resolveEffectiveHistory,
   checkDuplicateIds,
   checkSequenceUniqueness,
+  type StoryEvent,
 } from "./story-state/fold.ts";
 
 const DEFAULT_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -266,6 +269,7 @@ function walkFiles(dir: string, exts: string[], acc: string[] = []): string[] {
  * - If promotion_target is set and differs from source:
  *   - missing target → approved but awaiting promotion (OK)
  *   - present target → hash must equal artifact_hash (promotion completed)
+ * Paths must stay inside the book workspace.
  */
 export function validateApprovalLifecycle(
   bookAbs: string,
@@ -285,7 +289,15 @@ export function validateApprovalLifecycle(
     return;
   }
 
-  const sourceAbs = path.join(bookAbs, source);
+  let sourceAbs: string;
+  try {
+    sourceAbs = resolveBookRelativePath(bookAbs, source);
+  } catch (e) {
+    const msg = e instanceof BookPathError ? e.message : (e as Error).message;
+    err(errors, `Approval ${fileLabel}: unsafe source_artifact ${source}: ${msg}`);
+    return;
+  }
+
   if (!fs.existsSync(sourceAbs)) {
     err(errors, `Approval ${fileLabel} source artifact missing: ${source}`);
   } else {
@@ -300,7 +312,14 @@ export function validateApprovalLifecycle(
 
   const target = data.promotion_target;
   if (target && target !== source) {
-    const targetAbs = path.join(bookAbs, target);
+    let targetAbs: string;
+    try {
+      targetAbs = resolveBookRelativePath(bookAbs, target);
+    } catch (e) {
+      const msg = e instanceof BookPathError ? e.message : (e as Error).message;
+      err(errors, `Approval ${fileLabel}: unsafe promotion_target ${target}: ${msg}`);
+      return;
+    }
     if (fs.existsSync(targetAbs)) {
       const targetHash = sha256Artifact(targetAbs);
       if (targetHash !== data.artifact_hash) {
@@ -400,6 +419,7 @@ export function validateBookWorkspace(
     checkDuplicateIds(loaded.validEvents, errors);
     checkSequenceUniqueness(loaded.validEvents, errors);
     resolveEffectiveHistory(loaded.validEvents, errors);
+    validateBookEventProvenance(bookAbs, loaded.validEvents as StoryEvent[], errors);
   }
 
   const approvalsDir = path.join(bookAbs, "approvals");

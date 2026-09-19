@@ -8,6 +8,12 @@
     "date": "voyage-year-14-day-220",
     "time": "09:15"
   },
+  "provenance": {
+    "manuscript": "manuscript/scenes/scene-0001.md",
+    "manuscript_hash": "sha256:96d510371975c4627bc5ec407f01fab8b544d4efae7a0dc0b978c0bb48843bd9",
+    "approval_id": "apr-000001",
+    "scene_card": "planning/scenes/scene-0001.yaml"
+  },
   "changes": {
     "characters": {
       "sera-voss": {

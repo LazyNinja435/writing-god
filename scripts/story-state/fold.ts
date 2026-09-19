@@ -34,6 +34,14 @@ import {
 
 export type EventType = "scene" | "correction" | "canon-change" | "bootstrap";
 
+/** Manuscript provenance linking a narrative event to approved prose (+ optional approval). */
+export interface EventProvenance {
+  manuscript: string;
+  manuscript_hash: string;
+  approval_id?: string;
+  scene_card: string;
+}
+
 export interface StoryEvent {
   schema_version: string;
   event_id: string;
@@ -41,10 +49,12 @@ export interface StoryEvent {
   scene_id?: string;
   /** Recorded sequence: audit/append order; globally unique per book. */
   sequence: number;
-  /** V1: exactly one event ID when present (required for corrections). */
+  /** Only allowed on event_type correction. V1: exactly one event ID. */
   supersedes?: string[];
   reason?: string;
   story_time?: Record<string, unknown>;
+  /** Required for scene events; required for corrections that replace a scene root. */
+  provenance?: EventProvenance;
   changes: EventChanges;
 }
 
@@ -143,7 +153,16 @@ export interface DerivedState {
   total_event_count: number;
   active_event_count: number;
   superseded_event_count: number;
-  last_event_id: string | null;
+  /** Event with the greatest recorded sequence (audit/append tip). */
+  latest_recorded_event_id: string | null;
+  /** Greatest recorded sequence among all loaded events. */
+  latest_recorded_sequence: number | null;
+  /** Last event applied in effective replay order (active_event_ids tip). */
+  last_effective_event_id: string | null;
+  /**
+   * Active event IDs in effective replay order (sorted by effectiveSequence).
+   * Superseded events are excluded; corrections appear at their chain-root position.
+   */
   active_event_ids: string[];
   superseded_event_ids: string[];
   characters: Record<string, CharacterState>;
@@ -312,6 +331,25 @@ export function validateEvent(
     errors.push(`Event ${id}: scene events require scene_id`);
   }
 
+  if (event.event_type === "scene") {
+    const prov = event.provenance;
+    if (!prov || typeof prov !== "object") {
+      errors.push(`Event ${id}: scene events require provenance`);
+    } else {
+      if (!prov.manuscript || typeof prov.manuscript !== "string") {
+        errors.push(`Event ${id}: provenance.manuscript is required`);
+      }
+      if (!prov.manuscript_hash || typeof prov.manuscript_hash !== "string") {
+        errors.push(`Event ${id}: provenance.manuscript_hash is required`);
+      } else if (!/^sha256:[a-f0-9]{64}$/.test(prov.manuscript_hash)) {
+        errors.push(`Event ${id}: provenance.manuscript_hash must match sha256:<64 hex>`);
+      }
+      if (!prov.scene_card || typeof prov.scene_card !== "string") {
+        errors.push(`Event ${id}: provenance.scene_card is required`);
+      }
+    }
+  }
+
   if (event.event_type === "correction") {
     if (!Array.isArray(event.supersedes) || event.supersedes.length !== 1) {
       errors.push(`Event ${id}: correction events require supersedes with exactly one event ID`);
@@ -319,6 +357,8 @@ export function validateEvent(
     if (!event.reason || typeof event.reason !== "string") {
       errors.push(`Event ${id}: correction events require reason`);
     }
+  } else if (event.supersedes !== undefined) {
+    errors.push(`Event ${id}: only correction events may have supersedes`);
   }
 
   if (event.supersedes !== undefined) {
@@ -495,9 +535,9 @@ export function resolveEffectiveHistory(
           `Event ${event.event_id}: correction must supersede exactly one event (V1)`,
         );
       }
-    } else if (supersedes.length > 1) {
+    } else if (supersedes.length > 0) {
       errors.push(
-        `Event ${event.event_id}: V1 allows superseding at most one event (got ${supersedes.length})`,
+        `Event ${event.event_id}: only correction events may have supersedes`,
       );
     }
 
@@ -744,7 +784,7 @@ function applyInitial(state: DerivedState, initial: InitialState): void {
 }
 
 function applyEvent(state: DerivedState, event: StoryEvent): void {
-  state.last_event_id = event.event_id;
+  state.last_effective_event_id = event.event_id;
   const { changes } = event;
 
   for (const [id, delta] of Object.entries(changes.characters ?? {})) {
@@ -844,17 +884,34 @@ export function foldEvents(
     sourceHash: string;
     totalEventCount: number;
     supersededEventIds: string[];
+    /** All loaded events (active + superseded) for recorded-tip audit metadata. */
+    allEvents?: StoryEvent[];
   },
 ): DerivedState {
   const active_event_ids = effectiveHistory.map((e) => e.event.event_id);
   const superseded_event_ids = [...options.supersededEventIds].sort();
+
+  let latest_recorded_event_id: string | null = null;
+  let latest_recorded_sequence: number | null = null;
+  const allEvents = options.allEvents ?? effectiveHistory.map((e) => e.event);
+  if (allEvents.length > 0) {
+    const sorted = [...allEvents].sort((a, b) => {
+      if (a.sequence !== b.sequence) return a.sequence - b.sequence;
+      return a.event_id.localeCompare(b.event_id);
+    });
+    const latest = sorted[sorted.length - 1];
+    latest_recorded_event_id = latest.event_id;
+    latest_recorded_sequence = latest.sequence;
+  }
 
   const state: DerivedState = {
     source_hash: options.sourceHash,
     total_event_count: options.totalEventCount,
     active_event_count: effectiveHistory.length,
     superseded_event_count: superseded_event_ids.length,
-    last_event_id: null,
+    latest_recorded_event_id,
+    latest_recorded_sequence,
+    last_effective_event_id: null,
     active_event_ids,
     superseded_event_ids,
     characters: {},
@@ -913,7 +970,9 @@ export function writeDerived(derived: DerivedState, derivedDir: string): void {
       total_event_count: derived.total_event_count,
       active_event_count: derived.active_event_count,
       superseded_event_count: derived.superseded_event_count,
-      last_event_id: derived.last_event_id,
+      latest_recorded_event_id: derived.latest_recorded_event_id,
+      latest_recorded_sequence: derived.latest_recorded_sequence,
+      last_effective_event_id: derived.last_effective_event_id,
       active_event_ids: derived.active_event_ids,
       superseded_event_ids: derived.superseded_event_ids,
     },
@@ -983,6 +1042,7 @@ export function runFold(
       sourceHash,
       totalEventCount: loaded.validEvents.length,
       supersededEventIds: [...resolution.supersededIds],
+      allEvents: loaded.validEvents,
     });
   } catch (err) {
     return {

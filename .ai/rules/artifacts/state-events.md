@@ -6,6 +6,32 @@
 - Filenames may be descriptive: `evt-000001-scene-0001-approved.json`.
 - Each event carries both `event_id` and (for scene/correction) `scene_id` as needed.
 
+## Manuscript provenance
+
+Scene events (and corrections that ultimately replace a scene root) carry structured `provenance`:
+
+```json
+{
+  "provenance": {
+    "manuscript": "manuscript/scenes/scene-0001.md",
+    "manuscript_hash": "sha256:…",
+    "approval_id": "apr-000001",
+    "scene_card": "planning/scenes/scene-0001.yaml"
+  }
+}
+```
+
+| Field | Required |
+|-------|----------|
+| `manuscript` | Always for scene / scene-root correction |
+| `manuscript_hash` | Always — SHA-256 of **file bytes** (`sha256:` + 64 lowercase hex) |
+| `scene_card` | Always — must exist; `scene_id` must match the event |
+| `approval_id` | Mandatory when `book.yaml` → `human_approval.scenes: true` |
+
+Non-scene types (`canon-change`, `bootstrap`, corrections of non-scene roots) may omit manuscript provenance.
+
+Validate hard-fails when the manuscript is missing, escapes the book workspace, hash mismatches, scene card mismatches, or (when scenes approval is required) approval record binding fails.
+
 ## Recorded sequence vs effective sequence
 
 | Concept | Meaning |
@@ -33,10 +59,11 @@
 Never edit or delete committed event files. Corrections:
 
 - `event_type: correction`
-- `supersedes: [exactly_one_event_id]` — `minItems: 1`, `maxItems: 1`, `uniqueItems: true`
+- `supersedes: [exactly_one_event_id]` — **only** `correction` may have `supersedes` (scene/canon-change/bootstrap with `supersedes` are invalid)
 - `reason`
 - `changes` — **full replacement deltas** for the corrected outcome
 - Recorded `sequence` must be **greater than** the superseded event's recorded sequence (including along chains)
+- Must not bypass approval: see continuity-repair (extraction reuse vs manuscript revision)
 
 **Chains** are valid: `A ← B ← C` means C occupies A's effective historical position.
 
@@ -81,5 +108,7 @@ Invalid events never fold (no write).
 - `total_event_count`
 - `active_event_count`
 - `superseded_event_count`
-- `active_event_ids` / `superseded_event_ids`
-- `last_event_id`
+- `active_event_ids` — IDs in **effective replay order** (superseded excluded)
+- `superseded_event_ids`
+- `latest_recorded_event_id` / `latest_recorded_sequence` — tip of audit/append order
+- `last_effective_event_id` — last event applied in effective replay order

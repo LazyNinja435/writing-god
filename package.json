@@ -8,7 +8,7 @@
     "validate": "tsx scripts/validate.ts",
     "fold": "tsx scripts/story-state/fold.ts",
     "fold:check": "tsx scripts/story-state/fold.ts --check",
-    "test": "tsx --test scripts/story-state/fold.test.ts scripts/validate.test.ts"
+    "test": "tsx --test scripts/story-state/fold.test.ts scripts/validate.test.ts scripts/lib/book-paths.test.ts scripts/lib/provenance-validation.test.ts"
   },
   "devDependencies": {
     "ajv": "^8.20.0",

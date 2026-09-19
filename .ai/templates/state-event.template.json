@@ -5,6 +5,12 @@
   "scene_id": "scene-0001",
   "sequence": 1,
   "story_time": {},
+  "provenance": {
+    "manuscript": "manuscript/scenes/scene-0001.md",
+    "manuscript_hash": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+    "approval_id": "apr-000001",
+    "scene_card": "planning/scenes/scene-0001.yaml"
+  },
   "changes": {
     "characters": {},
     "threads": {},
